@@ -1,45 +1,37 @@
+
 <?php
-// Paramètre de Connexion à la base de données
-$servername = 'localhost';
-$username = 'root';
-$dbname = 'inscription1';
+// Vérification et enregistrement des données dans la base de données
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupération des données du formulaire
+    $nom = $_POST["nom"];
+    $prenom = $_POST["prenom"];
+    $date_naissance = $_POST["date_naissance"];
 
-// Connexion à la base de données
-try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username,);
-    // Configuration des options de PDO pour générer des exceptions en cas d'erreurs
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    // Vérifier si le formulaire a été soumis
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      // Récupérer les valeurs soumises
-      $nom = htmlspecialchars($_POST["nom"]);
-      $prenom = htmlspecialchars($_POST["prenom"]);
-      $date_naissance = htmlspecialchars($_POST["date_naissance"]);
+     // Vérification des données
+     
 
-      // Vérifier si les valeurs sont valides
-      if (!empty($nom) && !empty($prenom) && !empty($date_naissance)) {
-          // Préparer la requête SQL pour insérer les données dans la table
-          $stmt = $conn->prepare("INSERT INTO apprenants (nom, prenom, date_naissance) VALUES (:nom, :prenom, :date_naissance)");
-          $stmt->bindParam(':nom', $nom);
-          $stmt->bindParam(':prenom', $prenom);
-          $stmt->bindParam(':date_naissance', $date_naissance);
+    // Enregistrement des données dans la base de données
+    $servername = 'localhost';
+    $username = 'root';
+    $dbname = 'inscription1';
 
-          // Exécuter la requête
-          $stmt->execute();
+    $conn = new mysqli($servername, $username, $password, $dbname);
 
-          // Afficher un message de confirmation
-          echo "Merci pour votre inscription, $prenom $nom !";
-          
-      } else {
-          // Afficher un message d'erreur si les données sont manquantes
-          echo "Veuillez remplir tous les champs du formulaire.";
-      }
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
     }
-} catch(PDOException $e) {
-    // Afficher une erreur en cas de problème de connexion à la base de données
-    echo "Erreur : " . $e->getMessage();
-}
 
-// Fermer la connexion à la base de données
-$conn = null;
+    $sql = "INSERT INTO apprenants (nom, prenom, date_naissance) VALUES ('$nom', '$prenom', '$date_naissance')";
+
+    if ($conn->query($sql) === TRUE) {
+        // Redirection vers une autre page après l'enregistrement des données
+        header("Location: enregistrement.php");
+        exit();
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+
+    $conn->close();
+}
 ?>
+
