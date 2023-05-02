@@ -17,7 +17,7 @@
 			background-color: #f5f5f5;
 		}
 		.container {
-			margin-top: 50px;
+			margin-top: 150px;
 			background-color: #fff;
 			padding: 30px;
 			border-radius: 5px;

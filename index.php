@@ -16,11 +16,14 @@
 			background-color: #FFE4E1;
 		}
 		.container {
-			margin-top: 50px;
+			margin-top: 100px;
 			background-color: #F0ECEC;
 			padding: 30px;
 			border-radius: 5px;
 			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+			width:800px;
+
+
 		}
     </style>
 </head>
